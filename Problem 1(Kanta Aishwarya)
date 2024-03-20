@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> findVirusMatches(string patient, string virus) {
+  vector<int> matchingIndices;
+  for (int i = 0; i < patient.length() - virus.length() + 1; ++i) {
+    int mismatchCount = 0;
+    for (int j = 0; j < virus.length(); ++j) {
+      if (patient[i + j] != virus[j]) {
+        mismatchCount++;
+        if (mismatchCount > 1) {
+          break;
+        }
+      }
+    }
+    if (mismatchCount <= 1) {
+      matchingIndices.push_back(i);
+    }
+  }
+  return matchingIndices;
+}
+
+int main() {
+  int numberOfTests;
+  cin >> numberOfTests;
+
+  for (int i = 0; i < numberOfTests; ++i) {
+    string patientString, virusString;
+    cin >> patientString >> virusString;
+    vector<int> indices = findVirusMatches(patientString, virusString);
+
+    if (indices.empty()) {
+      cout << "No Match!" << endl;
+    } else {
+      for (int index : indices) {
+        cout << index << " ";
+      }
+      cout << endl;
+    }
+  }
+
+  return 0;
+}
+INPUT:
+3
+cgatcg   gc
+
+atcgatcga   cgg
+
+aardvark   ab 
+
+OUTPUT:
+
+1 3 
+2 6 
+0 1 5 
